@@ -53,9 +53,12 @@ class _MyAppState extends State<MyApp> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {
-                    tts.speak('say something that we can debug please');
+                    //tts.setLanguage('zh-TW');
+                    tts.setLanguage('en-US');
+                    // tts.setVoice('Karen');
+                    tts.speak('''30 meters ahead, turn right into International Street''');
                   },
                   child: Text('Say Something...'),
                 ),

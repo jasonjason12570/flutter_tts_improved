@@ -15,11 +15,11 @@ class FlutterTtsImproved {
 
   static const MethodChannel _channel = MethodChannel('flutter_tts_improved');
 
-  VoidCallback initHandler;
-  VoidCallback startHandler;
-  VoidCallback completionHandler;
-  FlutterTTSImprovedProgressHandler progressHandler;
-  ErrorHandler errorHandler;
+  VoidCallback? initHandler;
+  VoidCallback? startHandler;
+  VoidCallback? completionHandler;
+  FlutterTTSImprovedProgressHandler? progressHandler;
+  ErrorHandler? errorHandler;
 
   /// [Future] which invokes the platform specific method for speaking
   Future<dynamic> speak(String text) =>
@@ -57,7 +57,7 @@ class FlutterTtsImproved {
   /// Returns a list of available languages
   Future<List<String>> get getLanguages async {
     final List<String> languages =
-        List<String>.from(await _channel.invokeMethod<dynamic>('getLanguages'));
+        List<String>.from(await (_channel.invokeMethod<dynamic>('getLanguages') as FutureOr<Iterable<dynamic>>));
     return languages;
   }
 
@@ -66,7 +66,7 @@ class FlutterTtsImproved {
   /// Returns a `List` of voice names
   Future<dynamic> get getVoices async {
     final List<String> voices =
-        List<String>.from(await _channel.invokeMethod<dynamic>('getVoices'));
+        List<String>.from(await (_channel.invokeMethod<dynamic>('getVoices') as FutureOr<Iterable<dynamic>>));
     return voices;
   }
 
@@ -106,23 +106,23 @@ class FlutterTtsImproved {
     switch (call.method) {
       case 'tts.init':
         if (initHandler != null) {
-          initHandler();
+          initHandler!();
         }
         break;
       case 'speak.onStart':
         if (startHandler != null) {
-          startHandler();
+          startHandler!();
         }
         break;
       case 'speak.onComplete':
         if (completionHandler != null) {
-          completionHandler();
+          completionHandler!();
         }
         break;
       case 'speak.onProgress':
         if (progressHandler != null) {
           final Map<dynamic, dynamic> args = call.arguments;
-          progressHandler(
+          progressHandler!(
             args['string'].toString(),
             int.parse(args['start']),
             int.parse(args['end']),
@@ -132,7 +132,7 @@ class FlutterTtsImproved {
         break;
       case 'speak.onError':
         if (errorHandler != null) {
-          errorHandler(call.arguments);
+          errorHandler!(call.arguments);
         }
         break;
       default:
